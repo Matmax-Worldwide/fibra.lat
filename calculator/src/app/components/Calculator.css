@@ -40,6 +40,9 @@
   background-clip: text;
   text-fill-color: transparent;
   letter-spacing: -0.025em;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .calculator p {
@@ -47,6 +50,7 @@
   color: var(--text-light);
   margin-bottom: 2rem;
   line-height: 1.6;
+  text-align: center;
 }
 
 .calculator h2 {
@@ -946,4 +950,15 @@ input[type="range"]::-webkit-slider-thumb:hover {
   text-align: center;
   font-weight: 500;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.version {
+  font-size: 1rem;
+  color: var(--secondary-color);
+  background-color: rgba(139, 92, 246, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  font-weight: normal;
 } 

@@ -390,7 +390,7 @@ export function Calculator() {
     
     // Calculate Max Property Cost for REIT using standard rates
     // IMPORTANT: This exact formula must match the one in TestCalculations.ts
-    let maxPropertyCostForREITValue = noiForReitCalc / standardAdjustedCapRate;
+    const maxPropertyCostForREITValue = noiForReitCalc / standardAdjustedCapRate;
     
     console.log(`MAX PROPERTY COST FOR REIT calculation using standard rates:`);
     console.log(`Annual Rental Income (with occupancy): $${annualRentalIncomeWithOccupancy.toFixed(2)}`);
@@ -999,8 +999,8 @@ export function Calculator() {
 
   return (
     <div className="calculator">
-      <h1>REIT Investment Calculator</h1>
-      <p>Analyze the viability of real estate investments with REIT-specific considerations</p>
+      <h1>FIBRA Investment Calculator <span className="version">v1.2</span></h1>
+      <p>Professional analysis tools for real estate investments with REIT/FIBRA considerations</p>
       
       <div className="calculator-container">
         <div className="input-section">
