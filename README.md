@@ -1,90 +1,65 @@
-# InvestmentCalculator
+# FIBRA/REIT Investment Calculator
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A comprehensive investment calculator for analyzing real estate opportunities in REITs (US) and FIBRAs (Peru).
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## Features
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+- **Standard Calculator**: Analyze income-producing properties for REITs/FIBRAs
+- **Development Calculator**: Evaluate hotel acquisition and renovation projects for REITs/FIRBIs
+- **Cross-Border Investment Guide**: Compare tax implications between US REITs and Peru FIBRAs
+- **Property Search**: Find properties available for investment (placeholder functionality)
+- **Investor Access**: Secure login for investors (placeholder functionality)
 
-## Finish your CI setup
+## Technologies
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/WXXDZ7HeII)
+- React
+- TypeScript
+- Nx Monorepo
+- Vercel Deployment
+- GitHub Actions CI/CD
 
+## Development
 
-## Generate a library
+This project uses Nx for managing the monorepo structure. To get started:
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+```bash
+# Install dependencies
+npm install
+
+# Serve the application locally
+npx nx serve calculator
+
+# Build the application
+npx nx build calculator --prod
+
+# Run tests
+npx nx test calculator
 ```
 
-## Run tasks
+## CI/CD Setup
 
-To build the library use:
+This project is configured with GitHub Actions for CI/CD and automatic deployment to Vercel.
 
-```sh
-npx nx build pkg1
-```
+### GitHub Secrets Required
 
-To run any task with Nx use:
+To enable automated deployment, add the following secrets to your GitHub repository:
 
-```sh
-npx nx <target> <project-name>
-```
+- `VERCEL_TOKEN`: Your Vercel personal access token
+- `VERCEL_ORG_ID`: `team_asXXTJcib3U3sEnaF94i2Sm9`
+- `VERCEL_PROJECT_ID`: `prj_q1W2ma1vn980PDtAL5PwDeRJFt5M`
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### How to get a Vercel token:
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+1. Go to https://vercel.com/account/tokens
+2. Create a new token with a descriptive name (e.g., "GitHub Actions")
+3. Copy the token and add it as a secret in your GitHub repository settings
 
-## Versioning and releasing
+## Deployment
 
-To version and release the library use
+The application is automatically deployed to Vercel when changes are pushed to the main branch.
 
-```
-npx nx release
-```
+Current deployment: [https://investment-calculator-lilac-xi.vercel.app](https://investment-calculator-lilac-xi.vercel.app)
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+## License
 
-[Learn more about Nx release &raquo;](hhttps://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
-```
-
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
-
-```sh
-npx nx sync:check
-```
-
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
-
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+© 2025 Alberto Saco Puntriano. All rights reserved.
