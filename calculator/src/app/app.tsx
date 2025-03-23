@@ -113,6 +113,8 @@ export function App() {
           <p>FIBRA/REIT Investment Calculator | A tool for real estate investors</p>
           <p className="footer-credits">
             Created by <a href="https://albertosaco.com" className="author-link">Alberto Saco Puntriano</a>
+            <span className="footer-separator">|</span>
+            <a href="https://gsa.lat" className="company-link">GSA LATAM</a>
           </p>
         </div>
       </footer>
