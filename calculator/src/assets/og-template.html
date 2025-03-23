@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIBRA Investment Calculator OG Image</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      width: 1200px;
+      height: 630px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    
+    h1 {
+      font-size: 72px;
+      font-weight: 800;
+      margin: 0 0 24px;
+      letter-spacing: -1px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    h2 {
+      font-size: 36px;
+      font-weight: 500;
+      margin: 0 0 48px;
+      opacity: 0.9;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .calculator-icon {
+      width: 120px;
+      height: 120px;
+      background-color: white;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .calculator-icon svg {
+      width: 80px;
+      height: 80px;
+    }
+    
+    .author {
+      position: absolute;
+      bottom: 40px;
+      right: 60px;
+      font-size: 24px;
+      opacity: 0.8;
+      display: flex;
+      align-items: center;
+    }
+    
+    .grid-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.3;
+      z-index: 1;
+    }
+    
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    
+    .feature {
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+      background-color: rgba(255, 255, 255, 0.15);
+      padding: 12px 24px;
+      border-radius: 50px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .feature svg {
+      margin-right: 12px;
+      width: 24px;
+      height: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-backdrop"></div>
+  
+  <div class="container">
+    <div class="calculator-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1e40af">
+        <rect width="20" height="20" x="2" y="2" rx="2" ry="2"/>
+        <line x1="6" y1="6" x2="18" y2="6" stroke="#1e40af" stroke-width="2"/>
+        <line x1="6" y1="10" x2="18" y2="10" stroke="#1e40af" stroke-width="2"/>
+        <line x1="6" y1="14" x2="18" y2="14" stroke="#1e40af" stroke-width="2"/>
+        <line x1="6" y1="18" x2="18" y2="18" stroke="#1e40af" stroke-width="2"/>
+        <line x1="8" y1="4" x2="8" y2="20" stroke="#1e40af" stroke-width="2" stroke-dasharray="2"/>
+        <line x1="12" y1="4" x2="12" y2="20" stroke="#1e40af" stroke-width="2" stroke-dasharray="2"/>
+        <line x1="16" y1="4" x2="16" y2="20" stroke="#1e40af" stroke-width="2" stroke-dasharray="2"/>
+      </svg>
+    </div>
+    
+    <h1>FIBRA Investment Calculator</h1>
+    <h2>Analyze REIT & FIBRA investments with advanced metrics</h2>
+    
+    <div class="features">
+      <div class="feature">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18"/>
+          <path d="M18.4 9l-6-6-9 9"/>
+          <path d="M5.5 13.5L11 8l5 5 4-4"/>
+        </svg>
+        <span>Investment Analysis</span>
+      </div>
+      
+      <div class="feature">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+        <span>Cross-Border Investments</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="author">
+    Created by Alberto Saco Puntriano
+  </div>
+</body>
+</html> 

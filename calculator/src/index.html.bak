@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>FIBRA Investment Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="FIBRA Investment Calculator" />
+    <meta name="description" content="Advanced calculator for REIT and FIBRA investments, with cross-border investment analysis between US REITs and Peru FIBRAs." />
+    <meta name="author" content="Alberto Saco Puntriano" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fibra-calculator.vercel.app/" />
+    <meta property="og:title" content="FIBRA Investment Calculator" />
+    <meta property="og:description" content="Advanced calculator for REIT and FIBRA investments, with cross-border investment analysis between US REITs and Peru FIBRAs." />
+    <meta property="og:image" content="https://fibra-calculator.vercel.app/assets/og-image.jpg" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://fibra-calculator.vercel.app/" />
+    <meta property="twitter:title" content="FIBRA Investment Calculator" />
+    <meta property="twitter:description" content="Advanced calculator for REIT and FIBRA investments, with cross-border investment analysis between US REITs and Peru FIBRAs." />
+    <meta property="twitter:image" content="https://fibra-calculator.vercel.app/assets/og-image.jpg" />
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
