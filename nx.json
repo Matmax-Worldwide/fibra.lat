@@ -16,7 +16,8 @@
       "!{projectRoot}/test-setup.[jt]s"
     ],
     "sharedGlobals": [
-      "{workspaceRoot}/.github/workflows/ci.yml"
+      "{workspaceRoot}/.github/workflows/ci.yml",
+      "{workspaceRoot}/.github/workflows/fibra.lat.yml"
     ]
   },
   "nxCloudId": "67df593f89d8d1697fb1dfbe",
