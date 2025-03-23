@@ -112,9 +112,9 @@ export function App() {
         <div className="footer-content">
           <p>FIBRA/REIT Investment Calculator | A tool for real estate investors</p>
           <p className="footer-credits">
-            Created by <a href="https://albertosaco.com" className="author-link">Alberto Saco Puntriano</a>
+            Created by <a href="https://www.linkedin.com/in/albertosaco/" className="author-link">Alberto Saco Puntriano</a>
             <span className="footer-separator">|</span>
-            <a href="https://gsa.lat" className="company-link">GSA LATAM</a>
+            <a href="https://fibra.lat/investor-access" className="company-link">GSA LATAM</a>
           </p>
         </div>
       </footer>
