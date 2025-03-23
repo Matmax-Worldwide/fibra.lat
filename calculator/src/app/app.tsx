@@ -271,7 +271,7 @@ export function App() {
                   <li>
                     <strong>Peru FIBRAs:</strong> Required to distribute at least 95% of taxable income.
                   </li>
-                </ul>
+      </ul>
               </section>
 
               <section className="about-section">
@@ -297,7 +297,7 @@ export function App() {
                         placeholder="Your name" 
                         required 
                       />
-                    </div>
+    </div>
                     
                     <div className="form-group">
                       <label htmlFor="email">Email</label>
@@ -349,7 +349,7 @@ export function App() {
               </section>
             </div>
           } />
-        </Routes>
+    </Routes>
       </main>
 
       <footer className="app-footer">
