@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, NavLink, useLocation } from 'react-router-dom';
+import { Routes, Route, NavLink, useLocation, Link, Navigate } from 'react-router-dom';
+import styled from 'styled-components';
 // Import the Calculator component from the local components directory
 import { Calculator } from './components/Calculator';
 import { InvestorAccess } from './components/InvestorAccess';
@@ -7,7 +8,10 @@ import './styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PropertySearch from './components/PropertySearch';
 import DevelopmentCalculator from './components/DevelopmentCalculator';
+import CrossBorderInvestment from './components/CrossBorderInvestment';
+import About from './components/About';
 
+// Main App component - Updated with CI/CD pipeline test
 export function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
