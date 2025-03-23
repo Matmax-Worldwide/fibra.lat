@@ -75,4 +75,5 @@ jobs:
           vercel deploy --prod \
             --token=${VERCEL_TOKEN} \
             --scope=${VERCEL_ORG_ID} \
-            --yes
+            --yes \
+            --cwd=.
