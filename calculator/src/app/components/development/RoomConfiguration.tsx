@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 // Define the actual room type format used in the calculator
 interface RoomTypeProps {
@@ -20,6 +20,9 @@ const RoomConfiguration: React.FC<RoomConfigurationProps> = ({
   roomTypes,
   onRoomTypeChange
 }) => {
+  // State to track if we're in advanced mode (showing numeric inputs for ratio)
+  const [advancedMode, setAdvancedMode] = useState<boolean>(false);
+
   const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -99,10 +102,48 @@ const RoomConfiguration: React.FC<RoomConfigurationProps> = ({
     }
   };
 
+  // Distribute the ratios evenly among all room types
+  const handleEvenDistribution = () => {
+    const evenRatio = Math.floor(100 / roomTypes.length);
+    const remainder = 100 - (evenRatio * roomTypes.length);
+    
+    roomTypes.forEach((room, index) => {
+      // Add the remainder to the first room
+      const ratio = index === 0 ? evenRatio + remainder : evenRatio;
+      onRoomTypeChange(room.id, 'ratio', ratio);
+    });
+  };
+
+  // Reset other ratios to 0 and set selected room type to 100%
+  const handleFullAllocation = (id: number) => {
+    roomTypes.forEach(room => {
+      const ratio = room.id === id ? 100 : 0;
+      onRoomTypeChange(room.id, 'ratio', ratio);
+    });
+  };
+
   return (
     <div className="room-configuration">
       <div className="input-section-header">
         <h3>Room Types Configuration</h3>
+        <div className="section-controls">
+          <button 
+            type="button" 
+            className="control-button" 
+            onClick={handleEvenDistribution}
+            title="Distribute ratios evenly among all room types"
+          >
+            Even Mix
+          </button>
+          <button
+            type="button"
+            className="control-button"
+            onClick={() => setAdvancedMode(!advancedMode)}
+            title={advancedMode ? "Switch to slider controls" : "Switch to numeric inputs"}
+          >
+            {advancedMode ? "Simple Mode" : "Advanced Mode"}
+          </button>
+        </div>
       </div>
 
       <div className="room-types-grid">
@@ -113,6 +154,7 @@ const RoomConfiguration: React.FC<RoomConfigurationProps> = ({
           <div className="room-adr">Serviced ADR</div>
           <div className="room-adr">Airbnb ADR</div>
           <div className="room-ratio">% in Mix</div>
+          <div className="room-actions">Actions</div>
         </div>
 
         {roomTypes.map((room) => (
@@ -161,15 +203,40 @@ const RoomConfiguration: React.FC<RoomConfigurationProps> = ({
               />
             </div>
             <div className="room-ratio">
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={room.ratio}
-                onChange={(e) => handleRatioChange(room.id, parseInt(e.target.value))}
-                className="ratio-slider"
-              />
-              <span className="ratio-value">{room.ratio}%</span>
+              {advancedMode ? (
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={room.ratio}
+                  onChange={(e) => handleRatioChange(room.id, parseInt(e.target.value || '0'))}
+                  className="ratio-input"
+                />
+              ) : (
+                <>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={room.ratio}
+                    onChange={(e) => handleRatioChange(room.id, parseInt(e.target.value))}
+                    className="ratio-slider"
+                  />
+                  <span className={`ratio-value ${room.ratio === 0 ? 'ratio-zero' : ''}`}>
+                    {room.ratio}%
+                  </span>
+                </>
+              )}
+            </div>
+            <div className="room-actions">
+              <button
+                type="button"
+                className="action-button"
+                onClick={() => handleFullAllocation(room.id)}
+                title="Set this room type to 100%"
+              >
+                100%
+              </button>
             </div>
           </div>
         ))}
@@ -195,6 +262,18 @@ const RoomConfiguration: React.FC<RoomConfigurationProps> = ({
             <span className={`total-ratio ${totals.totalRatio !== 100 ? 'ratio-error' : ''}`}>
               {totals.totalRatio}%
             </span>
+          </div>
+          <div className="room-actions">
+            {totals.totalRatio !== 100 && (
+              <button
+                type="button"
+                className="action-button fix-button"
+                onClick={handleEvenDistribution}
+                title="Fix the mix to equal 100%"
+              >
+                Fix
+              </button>
+            )}
           </div>
         </div>
       </div>

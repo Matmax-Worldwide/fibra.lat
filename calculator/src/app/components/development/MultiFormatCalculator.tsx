@@ -340,6 +340,15 @@ const MultiFormatCalculator: React.FC = () => {
     );
   };
 
+  // Handle commercial space field change
+  const handleCommercialSpaceChange = (id: number, field: string, value: number) => {
+    setCommercialSpaces(prevSpaces => 
+      prevSpaces.map(space => 
+        space.id === id ? { ...space, [field]: value } : space
+      )
+    );
+  };
+
   // Handle amenity toggle
   const handleAmenityToggle = (id: number) => {
     setAmenities(prevAmenities => 
@@ -550,6 +559,7 @@ const MultiFormatCalculator: React.FC = () => {
         <CommercialSpaces
           spaces={commercialSpaces}
           onToggleSpace={handleCommercialSpaceToggle}
+          onSpaceChange={handleCommercialSpaceChange}
         />
         
         {/* Amenities Selection */}
