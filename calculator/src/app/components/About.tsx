@@ -61,10 +61,7 @@ const About: React.FC = () => {
       <section>
         <h2>About the Creator</h2>
         <p>
-          The FIBRA/REIT Investment Calculator was created by Alberto Saco Puntriano, a real estate 
-          investment professional with experience across multiple markets. Alberto developed this tool
-          to address the lack of specialized calculators for the unique considerations in REIT and FIBRA
-          investments, particularly for cross-border investment strategies.
+          The FIBRA/REIT Investment Calculator was created by Alberto Saco Puntriano and powered by GSA LATAM, to address the lack of specialized calculators for the unique considerations in REIT and FIBRA investments, particularly for cross-border investment strategies.
         </p>
       </section>
       

@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "buildCommand": "npx nx build calculator",
+  "buildCommand": "npx nx build calculator --prod",
   "outputDirectory": "calculator/dist",
   "devCommand": "npx nx serve calculator",
+  "github": {
+    "enabled": true,
+    "silent": false
+  },
   "rewrites": [
     {
       "source": "/(.*)",
