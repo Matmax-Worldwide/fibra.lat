@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import FormatConfiguration from './FormatConfiguration';
 import RoomConfiguration from './RoomConfiguration';
 import CommercialSpaces from './CommercialSpaces';
@@ -225,6 +225,13 @@ const defaultAmenities = [
 ];
 
 const MultiFormatCalculator: React.FC = () => {
+  // Login state
+  const [password, setPassword] = useState<string>('');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [loginError, setLoginError] = useState<string>('');
+  const [loginAttempts, setLoginAttempts] = useState<number>(0);
+  
+  // Calculator state
   // State for property details
   const [propertyName, setPropertyName] = useState<string>('');
   const [location, setLocation] = useState<string>('');
@@ -264,6 +271,30 @@ const MultiFormatCalculator: React.FC = () => {
   // Calculation and results state
   const [isCalculating, setIsCalculating] = useState<boolean>(false);
   const [results, setResults] = useState<CalculationResults | null>(null);
+
+  // Check if user is already authenticated from localStorage
+  useEffect(() => {
+    const savedAuth = localStorage.getItem('reit-calculator-auth');
+    if (savedAuth === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Check if password matches
+    if (password === 'gsalatamb2025') {
+      setIsAuthenticated(true);
+      setLoginError('');
+      // Save authentication status to localStorage
+      localStorage.setItem('reit-calculator-auth', 'true');
+    } else {
+      setLoginError('Invalid password. Please try again.');
+      setLoginAttempts(prevAttempts => prevAttempts + 1);
+      setPassword('');
+    }
+  };
 
   // Handle property details change
   const handlePropertyDetailsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -507,102 +538,131 @@ const MultiFormatCalculator: React.FC = () => {
         Model different combinations of hotel rooms, serviced apartments, and Airbnb units to optimize your real estate investment strategy.
       </p>
       
-      <div className="calculator-content">
-        {/* Property Details Section */}
-        <div className="input-section">
-          <div className="input-section-header">
-            <h3>Property Details</h3>
-          </div>
-          <div className="input-grid">
-            <div className="input-group">
-              <label htmlFor="propertyName">Property Name</label>
-              <input
-                type="text"
-                id="propertyName"
-                name="propertyName"
-                value={propertyName}
-                onChange={handlePropertyDetailsChange}
-                placeholder="e.g. Lotus Residences"
-              />
-            </div>
-            <div className="input-group">
-              <label htmlFor="location">Location</label>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                value={location}
-                onChange={handlePropertyDetailsChange}
-                placeholder="e.g. Miraflores, Lima"
-              />
-            </div>
+      {!isAuthenticated ? (
+        <div className="password-protection-container">
+          <div className="login-box">
+            <h3>REIT/FIRBI Development Calculator</h3>
+            <p>Please enter the password to access this tool</p>
+            
+            <form onSubmit={handleLogin}>
+              <div className="login-input-group">
+                <label htmlFor="calculator-password">Password</label>
+                <input
+                  type="password"
+                  id="calculator-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  autoFocus
+                />
+              </div>
+              
+              {loginError && <div className="login-error">{loginError}</div>}
+              
+              <button type="submit" className="login-button">
+                Access Calculator
+              </button>
+            </form>
           </div>
         </div>
-        
-        {/* Format Configuration */}
-        <FormatConfiguration
-          formatDistribution={formatDistribution}
-          onFormatChange={handleFormatChange}
-          allowsShortStay={allowsShortStay}
-          allowsSubdivision={allowsSubdivision}
-          onAllowsShortStayChange={() => setAllowsShortStay(!allowsShortStay)}
-          onAllowsSubdivisionChange={() => setAllowsSubdivision(!allowsSubdivision)}
-        />
-        
-        {/* Room Configuration */}
-        <RoomConfiguration
-          roomTypes={roomTypes}
-          onRoomTypeChange={handleRoomTypeChange}
-        />
-        
-        {/* Commercial Spaces */}
-        <CommercialSpaces
-          spaces={commercialSpaces}
-          onToggleSpace={handleCommercialSpaceToggle}
-          onSpaceChange={handleCommercialSpaceChange}
-        />
-        
-        {/* Amenities Selection */}
-        <AmenitiesSelection
-          amenities={amenities}
-          onToggleAmenity={handleAmenityToggle}
-        />
-        
-        {/* Financial Parameters */}
-        <FinancialParameters
-          financialParams={financialParams}
-          onParamChange={handleFinancialParamChange}
-        />
-        
-        {/* Action Buttons */}
-        <div className="calculator-actions">
-          <button className="calculate-button" onClick={handleCalculate} disabled={isCalculating}>
-            {isCalculating ? (
-              <>
-                <span className="spinner-small"></span>
-                Calculating...
-              </>
-            ) : (
-              <>Calculate Investment</>
-            )}
-          </button>
-          <button className="reset-button" onClick={handleReset} disabled={isCalculating}>
-            Reset All
-          </button>
-        </div>
-        
-        {/* Results Section */}
-        {(isCalculating || results) && (
-          <div className="results-section">
-            <ResultsDisplay
-              results={results}
-              propertyName={propertyName}
-              location={location}
-              isLoading={isCalculating}
-            />
+      ) : (
+        <div className="calculator-content">
+          {/* Property Details Section */}
+          <div className="input-section">
+            <div className="input-section-header">
+              <h3>Property Details</h3>
+            </div>
+            <div className="input-grid">
+              <div className="input-group">
+                <label htmlFor="propertyName">Property Name</label>
+                <input
+                  type="text"
+                  id="propertyName"
+                  name="propertyName"
+                  value={propertyName}
+                  onChange={handlePropertyDetailsChange}
+                  placeholder="e.g. Lotus Residences"
+                />
+              </div>
+              <div className="input-group">
+                <label htmlFor="location">Location</label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  value={location}
+                  onChange={handlePropertyDetailsChange}
+                  placeholder="e.g. Miraflores, Lima"
+                />
+              </div>
+            </div>
           </div>
-        )}
-      </div>
+          
+          {/* Format Configuration */}
+          <FormatConfiguration
+            formatDistribution={formatDistribution}
+            onFormatChange={handleFormatChange}
+            allowsShortStay={allowsShortStay}
+            allowsSubdivision={allowsSubdivision}
+            onAllowsShortStayChange={() => setAllowsShortStay(!allowsShortStay)}
+            onAllowsSubdivisionChange={() => setAllowsSubdivision(!allowsSubdivision)}
+          />
+          
+          {/* Room Configuration */}
+          <RoomConfiguration
+            roomTypes={roomTypes}
+            onRoomTypeChange={handleRoomTypeChange}
+          />
+          
+          {/* Commercial Spaces */}
+          <CommercialSpaces
+            spaces={commercialSpaces}
+            onToggleSpace={handleCommercialSpaceToggle}
+            onSpaceChange={handleCommercialSpaceChange}
+          />
+          
+          {/* Amenities Selection */}
+          <AmenitiesSelection
+            amenities={amenities}
+            onToggleAmenity={handleAmenityToggle}
+          />
+          
+          {/* Financial Parameters */}
+          <FinancialParameters
+            financialParams={financialParams}
+            onParamChange={handleFinancialParamChange}
+          />
+          
+          {/* Action Buttons */}
+          <div className="calculator-actions">
+            <button className="calculate-button" onClick={handleCalculate} disabled={isCalculating}>
+              {isCalculating ? (
+                <>
+                  <span className="spinner-small"></span>
+                  Calculating...
+                </>
+              ) : (
+                <>Calculate Investment</>
+              )}
+            </button>
+            <button className="reset-button" onClick={handleReset} disabled={isCalculating}>
+              Reset All
+            </button>
+          </div>
+          
+          {/* Results Section */}
+          {(isCalculating || results) && (
+            <div className="results-section">
+              <ResultsDisplay
+                results={results}
+                propertyName={propertyName}
+                location={location}
+                isLoading={isCalculating}
+              />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
