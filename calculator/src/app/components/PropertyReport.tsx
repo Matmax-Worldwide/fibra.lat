@@ -419,10 +419,10 @@ export function PropertyReport({
               <tbody>
                 {generateCashFlowProjection().map((year) => (
                   <tr key={year.year} className={year.isBreakEvenYear ? 'break-even-row' : ''}>
-                    <td>Year {year.year}{year.isBreakEvenYear ? ' (Break-even)' : ''}</td>
-                    <td>{formatCurrency(year.income)}</td>
-                    <td>{formatCurrency(year.cumulativeIncome)}</td>
-                    <td>
+                    <td data-label="Year">Year {year.year}{year.isBreakEvenYear ? ' (Break-even)' : ''}</td>
+                    <td data-label="Annual Income">{formatCurrency(year.income)}</td>
+                    <td data-label="Cumulative Income">{formatCurrency(year.cumulativeIncome)}</td>
+                    <td data-label="Recovery %">
                       <div className="recovery-bar-container">
                         <div 
                           className="recovery-bar" 
@@ -431,9 +431,9 @@ export function PropertyReport({
                         <span>{formatPercentage(year.recoveryPercentage)}</span>
                       </div>
                     </td>
-                    <td>{formatCurrency(year.propertyValue)}</td>
-                    <td>{formatPercentage(year.cashYield)}</td>
-                    <td>{formatPercentage(year.totalReturn)}</td>
+                    <td data-label="Property Value">{formatCurrency(year.propertyValue)}</td>
+                    <td data-label="Cash Yield">{formatPercentage(year.cashYield)}</td>
+                    <td data-label="Total Return">{formatPercentage(year.totalReturn)}</td>
                   </tr>
                 ))}
               </tbody>

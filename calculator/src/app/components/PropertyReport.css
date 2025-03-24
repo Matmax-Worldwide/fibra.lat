@@ -703,14 +703,32 @@
     font-size: 1.25rem;
   }
   
-  .cashflow-table, 
-  .risk-table {
-    font-size: 0.85rem;
+  .cashflow-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   .cashflow-table th, 
-  .risk-table th {
+  .cashflow-table td {
+    padding: 0.75rem 0.5rem;
+    white-space: nowrap;
+    font-size: 0.85rem;
+  }
+  
+  .risk-table {
+    font-size: 0.85rem;
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .risk-table th, 
+  .risk-table td {
     padding: 0.5rem;
+    white-space: nowrap;
   }
   
   .comparison-grid,
@@ -735,10 +753,34 @@
   
   .recovery-bar-container {
     height: 16px;
+    min-width: 100px;
   }
   
   .recovery-bar-container span {
     font-size: 0.75rem;
+  }
+  
+  /* Verification tab improvements */
+  .formula-row {
+    grid-template-columns: 120px 1fr 100px;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+  }
+  
+  .formula-row .formula {
+    font-size: 0.8rem;
+  }
+  
+  .verification-tab {
+    gap: 1rem;
+  }
+  
+  .calculation-section {
+    padding: 1rem;
+  }
+  
+  .calculation-section h4 {
+    font-size: 1rem;
   }
 }
 
@@ -773,6 +815,104 @@
   .comparison-item,
   .reit-item {
     padding: 0.75rem;
+  }
+  
+  /* Improved mobile handling for Cash Flow table */
+  .cashflow-table {
+    display: block;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .cashflow-table thead {
+    display: none;
+  }
+  
+  .cashflow-table tbody {
+    display: block;
+    width: 100%;
+  }
+  
+  .cashflow-table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .cashflow-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    text-align: right;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+    font-size: 0.8rem;
+  }
+  
+  .cashflow-table td:last-child {
+    border-bottom: none;
+  }
+  
+  .cashflow-table td:before {
+    content: attr(data-label);
+    font-weight: 600;
+    text-align: left;
+  }
+  
+  .recovery-bar-container {
+    width: 100px;
+    height: 12px;
+    margin-left: auto;
+  }
+  
+  /* Verification tab enhancements for mobile */
+  .formula-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem 0;
+  }
+  
+  .formula-row .label {
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+  
+  .formula-row .formula {
+    font-size: 0.75rem;
+  }
+  
+  .formula-row .value {
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+  
+  .verification-info h4 {
+    font-size: 0.9rem;
+  }
+  
+  .verification-info ul {
+    padding-left: 1.25rem;
+  }
+  
+  .verification-info li {
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .verification-info p {
+    font-size: 0.8rem;
+  }
+  
+  .cash-flow-validation .validation-note {
+    font-size: 0.75rem;
+    padding-left: 1rem;
   }
 }
 
