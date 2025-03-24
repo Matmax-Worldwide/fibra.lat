@@ -4,7 +4,7 @@ import emailjs from '@emailjs/browser';
 // EmailJS configuration - These values need to be correct from your EmailJS account
 const EMAILJS_SERVICE_ID = 'service_4x72cnk'; 
 const EMAILJS_TEMPLATE_ID = 'template_kqtl0ko'; 
-const EMAILJS_USER_ID = 'zB2yQcVZfGABQvVLx'; 
+const EMAILJS_USER_ID = 'ihlFVMmEGfwbvhlaj'; // Updated to the correct public key
 
 const About: React.FC = () => {
   const [formData, setFormData] = useState({
