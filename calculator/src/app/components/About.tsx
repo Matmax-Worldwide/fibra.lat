@@ -42,14 +42,19 @@ const About: React.FC = () => {
     });
     
     try {
-      // Create form reference - using EmailJS newer API pattern
-      const form = e.target as HTMLFormElement;
+      // Create a template parameters object with fixed recipient
+      const templateParams = {
+        from_name: formData.name,
+        reply_to: formData.email,
+        message: formData.message,
+        to_email: 'betosaco@gmail.com' // Fixed recipient email
+      };
       
-      // Send the email using newer EmailJS API which is more reliable
-      const result = await emailjs.sendForm(
+      // Send the email using direct send method which is more reliable for fixed recipients
+      const result = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        form,
+        templateParams,
         EMAILJS_USER_ID
       );
       
@@ -116,11 +121,11 @@ const About: React.FC = () => {
           ) : (
             <form className="contact-form" onSubmit={handleSubmit}>
               <div className="form-group">
-                <label htmlFor="from_name">Name</label>
+                <label htmlFor="name">Name</label>
                 <input
                   type="text"
-                  id="from_name"
-                  name="from_name"
+                  id="name"
+                  name="name"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   required
@@ -129,11 +134,11 @@ const About: React.FC = () => {
               </div>
               
               <div className="form-group">
-                <label htmlFor="reply_to">Email</label>
+                <label htmlFor="email">Email</label>
                 <input
                   type="email"
-                  id="reply_to"
-                  name="reply_to"
+                  id="email"
+                  name="email"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   required
@@ -154,13 +159,6 @@ const About: React.FC = () => {
                 ></textarea>
               </div>
               
-              {/* Hidden field for recipient email */}
-              <input 
-                type="hidden" 
-                name="to_email" 
-                value="asp@gsa.lat" 
-              />
-              
               {formStatus === 'error' && (
                 <div className="error-message">
                   {errorMessage}
@@ -179,7 +177,7 @@ const About: React.FC = () => {
           
           <div className="contact-info">
             <p>You can also reach us directly at:</p>
-            <a href="mailto:asp@gsa.lat" className="email-link">asp@gsa.lat</a>
+            <a href="mailto:betosaco@gmail.com" className="email-link">betosaco@gmail.com</a>
           </div>
         </div>
       </section>
