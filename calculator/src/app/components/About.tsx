@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 const EMAILJS_SERVICE_ID = 'service_4lgty7j';
 const EMAILJS_TEMPLATE_ID = 'template_mktd5uz';
 const EMAILJS_USER_ID = 'ihlFVMmEGfwbvhlaj';
-const RECIPIENT_EMAIL = 'betosaco@gmail.com';
 
 const About: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -28,34 +27,35 @@ const About: React.FC = () => {
     setFormStatus('submitting');
     setErrorMessage('');
     
-    // Use the direct REST API approach which is more reliable
+    // Use the direct REST API approach as documented in EmailJS API docs
     try {
-      // Template parameters
-      const templateParams = {
+      // Prepare data exactly as shown in the API documentation
+      const data = {
         service_id: EMAILJS_SERVICE_ID,
         template_id: EMAILJS_TEMPLATE_ID,
         user_id: EMAILJS_USER_ID,
         template_params: {
+          // Use the variable names expected by your template
           from_name: formData.name,
           reply_to: formData.email,
-          message: formData.message,
-          to_email: RECIPIENT_EMAIL
+          message: formData.message
+          // No to_email here as it should be set in the EmailJS template
         }
       };
       
-      console.log('Sending email with params:', templateParams);
+      console.log('Sending email with:', data);
       
-      // Send using direct fetch to EmailJS API
+      // Send using the exact API format from the documentation
       const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(templateParams)
+        body: JSON.stringify(data)
       });
       
       if (response.ok) {
-        console.log('Email sent successfully!');
+        console.log('Email sent successfully!', response);
         setFormStatus('success');
         setFormData({ name: '', email: '', message: '' });
         
@@ -65,12 +65,13 @@ const About: React.FC = () => {
         }, 5000);
       } else {
         const errorText = await response.text();
+        console.error('EmailJS Error:', errorText);
         throw new Error(errorText);
       }
     } catch (error: any) {
       console.error('Error sending email:', error);
       setFormStatus('error');
-      setErrorMessage(`There was an error sending your message. Please try again later or email us directly: ${RECIPIENT_EMAIL}`);
+      setErrorMessage('There was an error sending your message. Please try again later.');
     }
   };
 
@@ -170,11 +171,6 @@ const About: React.FC = () => {
               </button>
             </form>
           )}
-          
-          <div className="contact-info">
-            <p>You can also reach us directly at:</p>
-            <a href={`mailto:${RECIPIENT_EMAIL}`} className="email-link">{RECIPIENT_EMAIL}</a>
-          </div>
         </div>
       </section>
     </div>
