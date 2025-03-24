@@ -1,45 +1,25 @@
 import React from 'react';
 
-interface FinancialParametersProps {
-  propertyName: string;
-  location: string;
+interface FinancialParamsType {
   totalArea: number;
-  acquisitionPrice: number;
-  equityPercentage: number;
-  debtInterestRate: number;
-  loanTermYears: number;
+  landCost: number;
+  buildingCostPerSqm: number;
+  equityRatio: number;
+  interestRate: number;
+  loanTerm: number;
+  discountRate: number;
   exitCapRate: number;
-  targetDistributionYield: number;
-  onPropertyNameChange: (name: string) => void;
-  onLocationChange: (location: string) => void;
-  onTotalAreaChange: (area: number) => void;
-  onAcquisitionPriceChange: (price: number) => void;
-  onEquityPercentageChange: (percentage: number) => void;
-  onDebtInterestRateChange: (rate: number) => void;
-  onLoanTermYearsChange: (years: number) => void;
-  onExitCapRateChange: (rate: number) => void;
-  onTargetDistributionYieldChange: (yield_: number) => void;
+  holdingPeriod: number;
+}
+
+interface FinancialParametersProps {
+  financialParams: FinancialParamsType;
+  onParamChange: (field: string, value: number) => void;
 }
 
 const FinancialParameters: React.FC<FinancialParametersProps> = ({
-  propertyName,
-  location,
-  totalArea,
-  acquisitionPrice,
-  equityPercentage,
-  debtInterestRate,
-  loanTermYears,
-  exitCapRate,
-  targetDistributionYield,
-  onPropertyNameChange,
-  onLocationChange,
-  onTotalAreaChange,
-  onAcquisitionPriceChange,
-  onEquityPercentageChange,
-  onDebtInterestRateChange,
-  onLoanTermYearsChange,
-  onExitCapRateChange,
-  onTargetDistributionYieldChange
+  financialParams,
+  onParamChange
 }) => {
   const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat('en-US', {
@@ -53,67 +33,60 @@ const FinancialParameters: React.FC<FinancialParametersProps> = ({
   return (
     <div className="financial-parameters">
       <div className="input-section-header">
-        <h3>Property & Financial Parameters</h3>
+        <h3>Financial Parameters</h3>
       </div>
 
       <div className="input-grid">
-        <div className="input-group">
-          <label htmlFor="property-name">Property Name</label>
-          <input
-            type="text"
-            id="property-name"
-            value={propertyName}
-            onChange={(e) => onPropertyNameChange(e.target.value)}
-            placeholder="Property Name"
-          />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="location">Location</label>
-          <input
-            type="text"
-            id="location"
-            value={location}
-            onChange={(e) => onLocationChange(e.target.value)}
-            placeholder="City, Country"
-          />
-        </div>
-
         <div className="input-group">
           <label htmlFor="total-area">Total Building Area (m²)</label>
           <input
             type="number"
             id="total-area"
-            value={totalArea}
-            onChange={(e) => onTotalAreaChange(Number(e.target.value))}
+            value={financialParams.totalArea}
+            onChange={(e) => onParamChange('totalArea', Number(e.target.value))}
             min="0"
             step="100"
           />
         </div>
 
         <div className="input-group">
-          <label htmlFor="acquisition-price">Acquisition Price</label>
+          <label htmlFor="land-cost">Land Cost</label>
           <input
             type="number"
-            id="acquisition-price"
-            value={acquisitionPrice}
-            onChange={(e) => onAcquisitionPriceChange(Number(e.target.value))}
+            id="land-cost"
+            value={financialParams.landCost}
+            onChange={(e) => onParamChange('landCost', Number(e.target.value))}
             min="0"
-            step="100000"
+            step="10000"
           />
           <div className="input-helper">
-            {totalArea > 0 ? `${formatCurrency(acquisitionPrice / totalArea)}/m²` : ''}
+            {financialParams.totalArea > 0 ? `${formatCurrency(financialParams.landCost / financialParams.totalArea)}/m²` : ''}
           </div>
         </div>
 
         <div className="input-group">
-          <label htmlFor="equity-percentage">Equity Percentage</label>
+          <label htmlFor="building-cost">Building Cost Per m²</label>
+          <input
+            type="number"
+            id="building-cost"
+            value={financialParams.buildingCostPerSqm}
+            onChange={(e) => onParamChange('buildingCostPerSqm', Number(e.target.value))}
+            min="0"
+            step="50"
+          />
+          <div className="input-helper">
+            Total: {formatCurrency(financialParams.buildingCostPerSqm * financialParams.totalArea)}
+          </div>
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="equity-ratio">Equity Percentage</label>
           <div className="input-with-suffix">
             <input
               type="number"
-              id="equity-percentage"
-              value={equityPercentage}
-              onChange={(e) => onEquityPercentageChange(Number(e.target.value))}
+              id="equity-ratio"
+              value={financialParams.equityRatio}
+              onChange={(e) => onParamChange('equityRatio', Number(e.target.value))}
               min="0"
               max="100"
               step="1"
@@ -123,13 +96,13 @@ const FinancialParameters: React.FC<FinancialParametersProps> = ({
         </div>
 
         <div className="input-group">
-          <label htmlFor="debt-interest-rate">Debt Interest Rate</label>
+          <label htmlFor="interest-rate">Debt Interest Rate</label>
           <div className="input-with-suffix">
             <input
               type="number"
-              id="debt-interest-rate"
-              value={debtInterestRate}
-              onChange={(e) => onDebtInterestRateChange(Number(e.target.value))}
+              id="interest-rate"
+              value={financialParams.interestRate}
+              onChange={(e) => onParamChange('interestRate', Number(e.target.value))}
               min="0"
               step="0.25"
             />
@@ -138,17 +111,32 @@ const FinancialParameters: React.FC<FinancialParametersProps> = ({
         </div>
 
         <div className="input-group">
-          <label htmlFor="loan-term-years">Loan Term</label>
+          <label htmlFor="loan-term">Loan Term</label>
           <div className="input-with-suffix">
             <input
               type="number"
-              id="loan-term-years"
-              value={loanTermYears}
-              onChange={(e) => onLoanTermYearsChange(Number(e.target.value))}
+              id="loan-term"
+              value={financialParams.loanTerm}
+              onChange={(e) => onParamChange('loanTerm', Number(e.target.value))}
               min="0"
               step="1"
             />
             <span className="input-suffix">years</span>
+          </div>
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="discount-rate">Discount Rate</label>
+          <div className="input-with-suffix">
+            <input
+              type="number"
+              id="discount-rate"
+              value={financialParams.discountRate}
+              onChange={(e) => onParamChange('discountRate', Number(e.target.value))}
+              min="0"
+              step="0.25"
+            />
+            <span className="input-suffix">%</span>
           </div>
         </div>
 
@@ -158,8 +146,8 @@ const FinancialParameters: React.FC<FinancialParametersProps> = ({
             <input
               type="number"
               id="exit-cap-rate"
-              value={exitCapRate}
-              onChange={(e) => onExitCapRateChange(Number(e.target.value))}
+              value={financialParams.exitCapRate}
+              onChange={(e) => onParamChange('exitCapRate', Number(e.target.value))}
               min="0"
               step="0.25"
             />
@@ -168,17 +156,17 @@ const FinancialParameters: React.FC<FinancialParametersProps> = ({
         </div>
 
         <div className="input-group">
-          <label htmlFor="target-distribution-yield">Target Distribution Yield</label>
+          <label htmlFor="holding-period">Holding Period</label>
           <div className="input-with-suffix">
             <input
               type="number"
-              id="target-distribution-yield"
-              value={targetDistributionYield}
-              onChange={(e) => onTargetDistributionYieldChange(Number(e.target.value))}
+              id="holding-period"
+              value={financialParams.holdingPeriod}
+              onChange={(e) => onParamChange('holdingPeriod', Number(e.target.value))}
               min="0"
-              step="0.25"
+              step="1"
             />
-            <span className="input-suffix">%</span>
+            <span className="input-suffix">years</span>
           </div>
         </div>
       </div>

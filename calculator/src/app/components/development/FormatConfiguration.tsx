@@ -1,29 +1,25 @@
 import React from 'react';
-import { OperationalFormat, PropertySegment, BuildingType } from '../../models/MultiFormatModel';
 
 interface FormatConfigurationProps {
-  hotelPercentage: number;
-  servicedPercentage: number;
-  airbnbPercentage: number;
-  propertySegment: PropertySegment;
-  buildingType: BuildingType;
-  onFormatChange: (
-    format: 'hotel' | 'serviced' | 'airbnb',
-    value: number
-  ) => void;
-  onSegmentChange: (segment: PropertySegment) => void;
-  onBuildingTypeChange: (type: BuildingType) => void;
+  formatDistribution: {
+    hotel: number;
+    serviced: number;
+    airbnb: number;
+  };
+  allowsShortStay: boolean;
+  allowsSubdivision: boolean;
+  onFormatChange: (format: 'hotel' | 'serviced' | 'airbnb', value: number) => void;
+  onAllowsShortStayChange: () => void;
+  onAllowsSubdivisionChange: () => void;
 }
 
 const FormatConfiguration: React.FC<FormatConfigurationProps> = ({
-  hotelPercentage,
-  servicedPercentage,
-  airbnbPercentage,
-  propertySegment,
-  buildingType,
+  formatDistribution,
+  allowsShortStay,
+  allowsSubdivision,
   onFormatChange,
-  onSegmentChange,
-  onBuildingTypeChange
+  onAllowsShortStayChange,
+  onAllowsSubdivisionChange
 }) => {
   return (
     <div className="format-configuration">
@@ -33,14 +29,14 @@ const FormatConfiguration: React.FC<FormatConfigurationProps> = ({
 
       <div className="format-sliders">
         <div className="format-slider-container">
-          <label htmlFor="hotel-percentage">Traditional Hotel: {hotelPercentage}%</label>
+          <label htmlFor="hotel-percentage">Traditional Hotel: {formatDistribution.hotel}%</label>
           <input
             type="range"
             id="hotel-percentage"
             min="0"
             max="100"
             step="5"
-            value={hotelPercentage}
+            value={formatDistribution.hotel}
             onChange={(e) => onFormatChange('hotel', parseInt(e.target.value))}
             className="format-slider"
           />
@@ -50,14 +46,14 @@ const FormatConfiguration: React.FC<FormatConfigurationProps> = ({
         </div>
 
         <div className="format-slider-container">
-          <label htmlFor="serviced-percentage">Serviced Apartments: {servicedPercentage}%</label>
+          <label htmlFor="serviced-percentage">Serviced Apartments: {formatDistribution.serviced}%</label>
           <input
             type="range"
             id="serviced-percentage"
             min="0"
             max="100"
             step="5"
-            value={servicedPercentage}
+            value={formatDistribution.serviced}
             onChange={(e) => onFormatChange('serviced', parseInt(e.target.value))}
             className="format-slider"
           />
@@ -67,14 +63,14 @@ const FormatConfiguration: React.FC<FormatConfigurationProps> = ({
         </div>
 
         <div className="format-slider-container">
-          <label htmlFor="airbnb-percentage">Airbnb/Booking: {airbnbPercentage}%</label>
+          <label htmlFor="airbnb-percentage">Airbnb/Booking: {formatDistribution.airbnb}%</label>
           <input
             type="range"
             id="airbnb-percentage"
             min="0"
             max="100"
             step="5"
-            value={airbnbPercentage}
+            value={formatDistribution.airbnb}
             onChange={(e) => onFormatChange('airbnb', parseInt(e.target.value))}
             className="format-slider"
           />
@@ -86,32 +82,31 @@ const FormatConfiguration: React.FC<FormatConfigurationProps> = ({
 
       <div className="supplementary-options">
         <div className="input-group">
-          <label htmlFor="property-segment">Property Segment</label>
-          <select
-            id="property-segment"
-            value={propertySegment}
-            onChange={(e) => onSegmentChange(e.target.value as PropertySegment)}
-          >
-            <option value="luxury">Luxury</option>
-            <option value="upscale">Upscale</option>
-            <option value="midscale">Midscale</option>
-            <option value="economy">Economy</option>
-          </select>
+          <label>
+            <input
+              type="checkbox"
+              checked={allowsShortStay}
+              onChange={onAllowsShortStayChange}
+            />
+            Allows Short-Term Stays (&lt; 30 days)
+          </label>
+          <div className="input-helper">
+            May impact zoning requirements and licensing
+          </div>
         </div>
 
         <div className="input-group">
-          <label htmlFor="building-type">Original Building Type</label>
-          <select
-            id="building-type"
-            value={buildingType}
-            onChange={(e) => onBuildingTypeChange(e.target.value as BuildingType)}
-          >
-            <option value="office">Office Building</option>
-            <option value="residential">Residential Building</option>
-            <option value="hotel">Existing Hotel</option>
-            <option value="industrial">Industrial Building</option>
-            <option value="historical">Historical Building</option>
-          </select>
+          <label>
+            <input
+              type="checkbox"
+              checked={allowsSubdivision}
+              onChange={onAllowsSubdivisionChange}
+            />
+            Can be subdivided into separate units
+          </label>
+          <div className="input-helper">
+            Enables individual unit sales or separate format operations
+          </div>
         </div>
       </div>
     </div>

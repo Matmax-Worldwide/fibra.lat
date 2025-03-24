@@ -1,14 +1,25 @@
 import React from 'react';
-import { AmenityType } from '../../models/MultiFormatModel';
+
+// Define the actual amenity format used in the calculator
+interface AmenityProps {
+  id: number;
+  name: string;
+  area: number;
+  capex: number;
+  isIncluded: boolean;
+  hotelImpact: { adr: number; occupancy: number; };
+  servicedImpact: { adr: number; occupancy: number; };
+  airbnbImpact: { adr: number; occupancy: number; };
+}
 
 interface AmenitiesSelectionProps {
-  amenities: AmenityType[];
-  onAmenityToggle: (id: string, isIncluded: boolean) => void;
+  amenities: AmenityProps[];
+  onToggleAmenity: (id: number) => void;
 }
 
 const AmenitiesSelection: React.FC<AmenitiesSelectionProps> = ({
   amenities,
-  onAmenityToggle
+  onToggleAmenity
 }) => {
   const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat('en-US', {
@@ -30,7 +41,7 @@ const AmenitiesSelection: React.FC<AmenitiesSelectionProps> = ({
           <div className="amenity-include">Include</div>
           <div className="amenity-name">Amenity</div>
           <div className="amenity-area">Area (m²)</div>
-          <div className="amenity-capex">CAPEX/m²</div>
+          <div className="amenity-capex">CAPEX</div>
           <div className="amenity-impact-hotel">Hotel Impact</div>
           <div className="amenity-impact-serviced">Serviced Impact</div>
           <div className="amenity-impact-airbnb">Airbnb Impact</div>
@@ -43,21 +54,21 @@ const AmenitiesSelection: React.FC<AmenitiesSelectionProps> = ({
                 type="checkbox"
                 id={`include-${amenity.id}`}
                 checked={amenity.isIncluded}
-                onChange={(e) => onAmenityToggle(amenity.id, e.target.checked)}
+                onChange={() => onToggleAmenity(amenity.id)}
               />
             </div>
             <div className="amenity-name">{amenity.name}</div>
             <div className="amenity-area">{amenity.area}</div>
-            <div className="amenity-capex">{formatCurrency(amenity.capexCost)}</div>
+            <div className="amenity-capex">{formatCurrency(amenity.capex)}</div>
             <div className="amenity-impact-hotel">
               <div className="impact-details">
                 <div className="impact-item">
                   <span className="impact-label">Occ:</span>
-                  <span className="impact-value">+{amenity.impact.hotel.occupancy}%</span>
+                  <span className="impact-value">+{amenity.hotelImpact.occupancy}%</span>
                 </div>
                 <div className="impact-item">
                   <span className="impact-label">ADR:</span>
-                  <span className="impact-value">+{amenity.impact.hotel.adr}%</span>
+                  <span className="impact-value">+{amenity.hotelImpact.adr}%</span>
                 </div>
               </div>
             </div>
@@ -65,11 +76,11 @@ const AmenitiesSelection: React.FC<AmenitiesSelectionProps> = ({
               <div className="impact-details">
                 <div className="impact-item">
                   <span className="impact-label">Occ:</span>
-                  <span className="impact-value">+{amenity.impact.serviced.occupancy}%</span>
+                  <span className="impact-value">+{amenity.servicedImpact.occupancy}%</span>
                 </div>
                 <div className="impact-item">
                   <span className="impact-label">ADR:</span>
-                  <span className="impact-value">+{amenity.impact.serviced.adr}%</span>
+                  <span className="impact-value">+{amenity.servicedImpact.adr}%</span>
                 </div>
               </div>
             </div>
@@ -77,11 +88,11 @@ const AmenitiesSelection: React.FC<AmenitiesSelectionProps> = ({
               <div className="impact-details">
                 <div className="impact-item">
                   <span className="impact-label">Occ:</span>
-                  <span className="impact-value">+{amenity.impact.airbnb.occupancy}%</span>
+                  <span className="impact-value">+{amenity.airbnbImpact.occupancy}%</span>
                 </div>
                 <div className="impact-item">
                   <span className="impact-label">ADR:</span>
-                  <span className="impact-value">+{amenity.impact.airbnb.adr}%</span>
+                  <span className="impact-value">+{amenity.airbnbImpact.adr}%</span>
                 </div>
               </div>
             </div>
