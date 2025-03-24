@@ -42,15 +42,20 @@ const About: React.FC = () => {
     });
     
     try {
-      // Create a template parameters object with fixed recipient
+      // Create a template parameters object with recipient properly formatted
+      // EmailJS requires specific parameter names based on the template
       const templateParams = {
         from_name: formData.name,
         reply_to: formData.email,
         message: formData.message,
-        to_email: 'betosaco@gmail.com' // Fixed recipient email
+        to_name: 'Alberto Saco',
+        to_email: 'betosaco@gmail.com',
+        subject: 'New message from FIBRA/REIT Investment Calculator'
       };
       
-      // Send the email using direct send method which is more reliable for fixed recipients
+      console.log('Sending with template params:', templateParams);
+      
+      // Send the email using direct send method
       const result = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
