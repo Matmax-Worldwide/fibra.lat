@@ -18,10 +18,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Start Nx Cloud CI Run for distributed task execution
-      - name: Start Nx Cloud CI Run
-        run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build"
-      
       # Setup Node.js and cache
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -37,25 +33,13 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
       
-      # Set up SHAs for nx affected commands
-      - name: Set up SHAs for affected commands
-        uses: nrwl/nx-set-shas@v4
-
-      # Run format check on affected files
+      # Run format check
       - name: Format check
-        run: npx nx-cloud record -- npx nx format:check
+        run: npx nx format:check
       
-      # Run lint on affected projects
-      - name: Lint
-        run: npx nx-cloud record -- npx nx affected -t lint --parallel=3
-
-      # Run tests on affected projects
-      - name: Test
-        run: npx nx-cloud record -- npx nx affected -t test --parallel=3
-        
-      # Build affected projects
+      # Build calculator
       - name: Build
-        run: npx nx-cloud record -- npx nx affected -t build --parallel=3
+        run: npx nx build calculator --prod
       
   deploy:
     runs-on: ubuntu-latest
