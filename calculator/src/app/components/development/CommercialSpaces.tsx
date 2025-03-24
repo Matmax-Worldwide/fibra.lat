@@ -20,10 +20,15 @@ interface CommercialSpacesProps {
   onSpaceChange?: (id: number, field: string, value: number) => void;
 }
 
+// No-op function to use as default
+function noop(): void {
+  // Intentionally empty
+}
+
 const CommercialSpaces: React.FC<CommercialSpacesProps> = ({
   spaces,
   onToggleSpace,
-  onSpaceChange = () => {} // Default no-op function if not provided
+  onSpaceChange = noop // Use the noop function instead of an empty arrow function
 }) => {
   const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat('en-US', {
