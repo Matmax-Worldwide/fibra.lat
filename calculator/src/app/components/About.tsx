@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import emailjs from '@emailjs/browser';
+import React, { useState } from 'react';
 
-// EmailJS configuration - These values need to be correct from your EmailJS account
+// EmailJS configuration
 const EMAILJS_SERVICE_ID = 'service_4lgty7j';
 const EMAILJS_TEMPLATE_ID = 'template_mktd5uz';
 const EMAILJS_USER_ID = 'ihlFVMmEGfwbvhlaj';
-
-// Recipient email is configured directly in the EmailJS template
 const RECIPIENT_EMAIL = 'betosaco@gmail.com';
 
 const About: React.FC = () => {
@@ -31,65 +28,49 @@ const About: React.FC = () => {
     setFormStatus('submitting');
     setErrorMessage('');
     
-    // For debugging - add to browser console
-    console.log('Sending email with config:', {
-      serviceId: EMAILJS_SERVICE_ID,
-      templateId: EMAILJS_TEMPLATE_ID,
-      userId: EMAILJS_USER_ID,
-      formData
-    });
-    
+    // Use the direct REST API approach which is more reliable
     try {
-      // We will use a form reference since it's more reliable with EmailJS
-      const form = e.target as HTMLFormElement;
+      // Template parameters
+      const templateParams = {
+        service_id: EMAILJS_SERVICE_ID,
+        template_id: EMAILJS_TEMPLATE_ID,
+        user_id: EMAILJS_USER_ID,
+        template_params: {
+          from_name: formData.name,
+          reply_to: formData.email,
+          message: formData.message,
+          to_email: RECIPIENT_EMAIL
+        }
+      };
       
-      // Add additional form data that might be expected by the template
-      // First let's add hidden fields to the form
-      const recipientInput = document.createElement('input');
-      recipientInput.type = 'hidden';
-      recipientInput.name = 'to_email'; // This should match exactly what's in your template
-      recipientInput.value = RECIPIENT_EMAIL;
-      form.appendChild(recipientInput);
+      console.log('Sending email with params:', templateParams);
       
-      // Convert form data field names to what EmailJS expects
-      const nameInput = form.querySelector('input[name="name"]') as HTMLInputElement;
-      if (nameInput) nameInput.name = 'from_name';
+      // Send using direct fetch to EmailJS API
+      const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(templateParams)
+      });
       
-      const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement;
-      if (emailInput) emailInput.name = 'reply_to';
-      
-      // Now send using the form method to ensure all fields are captured
-      const result = await emailjs.sendForm(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        form,
-        EMAILJS_USER_ID
-      );
-      
-      console.log('Email sent successfully:', result.text);
-      
-      // Clean up - remove the hidden input we added
-      form.removeChild(recipientInput);
-      
-      // Reset form field names
-      if (nameInput) nameInput.name = 'name';
-      if (emailInput) emailInput.name = 'email';
-      
-      // Handle successful submission
-      setFormStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-      
-      // Reset form status after 5 seconds
-      setTimeout(() => {
-        setFormStatus('idle');
-      }, 5000);
+      if (response.ok) {
+        console.log('Email sent successfully!');
+        setFormStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+        
+        // Reset form status after 5 seconds
+        setTimeout(() => {
+          setFormStatus('idle');
+        }, 5000);
+      } else {
+        const errorText = await response.text();
+        throw new Error(errorText);
+      }
     } catch (error: any) {
-      // Enhanced error logging
       console.error('Error sending email:', error);
-      if (error.text) console.error('Error details:', error.text);
-      
       setFormStatus('error');
-      setErrorMessage(`There was an error sending your message (${error.text || 'Unknown error'}). Please try again later or email us directly: ${RECIPIENT_EMAIL}`);
+      setErrorMessage(`There was an error sending your message. Please try again later or email us directly: ${RECIPIENT_EMAIL}`);
     }
   };
 
@@ -142,7 +123,7 @@ const About: React.FC = () => {
                   id="name"
                   name="name"
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  onChange={handleChange}
                   required
                   placeholder="Your name"
                 />
@@ -155,7 +136,7 @@ const About: React.FC = () => {
                   id="email"
                   name="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  onChange={handleChange}
                   required
                   placeholder="Your email address"
                 />
@@ -168,7 +149,7 @@ const About: React.FC = () => {
                   name="message"
                   rows={5}
                   value={formData.message}
-                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  onChange={handleChange}
                   required
                   placeholder="Your message"
                 ></textarea>
@@ -192,7 +173,7 @@ const About: React.FC = () => {
           
           <div className="contact-info">
             <p>You can also reach us directly at:</p>
-            <a href="mailto:betosaco@gmail.com" className="email-link">betosaco@gmail.com</a>
+            <a href={`mailto:${RECIPIENT_EMAIL}`} className="email-link">{RECIPIENT_EMAIL}</a>
           </div>
         </div>
       </section>
