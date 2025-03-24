@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import emailjs from '@emailjs/browser';
+
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = 'service_4x72cnk'; // Replace with your actual service ID
+const EMAILJS_TEMPLATE_ID = 'template_kqtl0ko'; // Replace with your actual template ID
+const EMAILJS_USER_ID = 'zB2yQcVZfGABQvVLx'; // Replace with your actual user ID
 
 const About: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +13,12 @@ const About: React.FC = () => {
     message: ''
   });
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  // Initialize EmailJS - no longer needed with the new package
+  // useEffect(() => {
+  //   emailjs.init(EMAILJS_USER_ID);
+  // }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -16,13 +28,29 @@ const About: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus('submitting');
+    setErrorMessage('');
     
-    // Simulate form submission - in a real app, you would send this to a server
-    setTimeout(() => {
-      console.log('Form submitted:', formData);
+    try {
+      // Create a template parameters object 
+      const templateParams = {
+        from_name: formData.name,
+        reply_to: formData.email,
+        message: formData.message,
+        to_email: 'asp@gsa.lat' // The recipient email
+      };
+      
+      // Send the email using new EmailJS syntax
+      await emailjs.send(
+        EMAILJS_SERVICE_ID, 
+        EMAILJS_TEMPLATE_ID, 
+        templateParams,
+        EMAILJS_USER_ID  // Public key is now the 4th parameter
+      );
+      
+      // Handle successful submission
       setFormStatus('success');
       setFormData({ name: '', email: '', message: '' });
       
@@ -30,7 +58,11 @@ const About: React.FC = () => {
       setTimeout(() => {
         setFormStatus('idle');
       }, 5000);
-    }, 1000);
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setFormStatus('error');
+      setErrorMessage('There was an error sending your message. Please try again later or email us directly.');
+    }
   };
 
   return (
@@ -113,6 +145,12 @@ const About: React.FC = () => {
                   placeholder="Your message"
                 ></textarea>
               </div>
+              
+              {formStatus === 'error' && (
+                <div className="error-message">
+                  {errorMessage}
+                </div>
+              )}
               
               <button 
                 type="submit" 
