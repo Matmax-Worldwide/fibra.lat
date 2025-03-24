@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 
 // EmailJS configuration - These values need to be correct from your EmailJS account
-const EMAILJS_SERVICE_ID = 'service_4lgty7j'; // Updated service ID
-const EMAILJS_TEMPLATE_ID = 'template_mktd5uz'; // Updated template ID
-const EMAILJS_USER_ID = 'ihlFVMmEGfwbvhlaj'; // This is your public key from EmailJS
+const EMAILJS_SERVICE_ID = 'service_4lgty7j';
+const EMAILJS_TEMPLATE_ID = 'template_mktd5uz';
+const EMAILJS_USER_ID = 'ihlFVMmEGfwbvhlaj';
+
+// Recipient email is configured directly in the EmailJS template
+const RECIPIENT_EMAIL = 'betosaco@gmail.com';
 
 const About: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -14,11 +17,6 @@ const About: React.FC = () => {
   });
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string>('');
-
-  // Initialize EmailJS - no longer needed with the new package
-  // useEffect(() => {
-  //   emailjs.init(EMAILJS_USER_ID);
-  // }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -42,28 +40,40 @@ const About: React.FC = () => {
     });
     
     try {
-      // Create a template parameters object with recipient properly formatted
-      // EmailJS requires specific parameter names based on the template
-      const templateParams = {
-        from_name: formData.name,
-        reply_to: formData.email,
-        message: formData.message,
-        to_name: 'Alberto Saco',
-        to_email: 'betosaco@gmail.com',
-        subject: 'New message from FIBRA/REIT Investment Calculator'
-      };
+      // We will use a form reference since it's more reliable with EmailJS
+      const form = e.target as HTMLFormElement;
       
-      console.log('Sending with template params:', templateParams);
+      // Add additional form data that might be expected by the template
+      // First let's add hidden fields to the form
+      const recipientInput = document.createElement('input');
+      recipientInput.type = 'hidden';
+      recipientInput.name = 'to_email'; // This should match exactly what's in your template
+      recipientInput.value = RECIPIENT_EMAIL;
+      form.appendChild(recipientInput);
       
-      // Send the email using direct send method
-      const result = await emailjs.send(
+      // Convert form data field names to what EmailJS expects
+      const nameInput = form.querySelector('input[name="name"]') as HTMLInputElement;
+      if (nameInput) nameInput.name = 'from_name';
+      
+      const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement;
+      if (emailInput) emailInput.name = 'reply_to';
+      
+      // Now send using the form method to ensure all fields are captured
+      const result = await emailjs.sendForm(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        templateParams,
+        form,
         EMAILJS_USER_ID
       );
       
       console.log('Email sent successfully:', result.text);
+      
+      // Clean up - remove the hidden input we added
+      form.removeChild(recipientInput);
+      
+      // Reset form field names
+      if (nameInput) nameInput.name = 'name';
+      if (emailInput) emailInput.name = 'email';
       
       // Handle successful submission
       setFormStatus('success');
@@ -79,7 +89,7 @@ const About: React.FC = () => {
       if (error.text) console.error('Error details:', error.text);
       
       setFormStatus('error');
-      setErrorMessage(`There was an error sending your message (${error.text || 'Unknown error'}). Please try again later or email us directly.`);
+      setErrorMessage(`There was an error sending your message (${error.text || 'Unknown error'}). Please try again later or email us directly: ${RECIPIENT_EMAIL}`);
     }
   };
 
