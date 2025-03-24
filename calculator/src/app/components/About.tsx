@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 
 // EmailJS configuration - These values need to be correct from your EmailJS account
-const EMAILJS_SERVICE_ID = 'service_4x72cnk'; 
+const EMAILJS_SERVICE_ID = 'service_4lgty7j'; // Updated service ID
 const EMAILJS_TEMPLATE_ID = 'template_kqtl0ko'; 
 const EMAILJS_USER_ID = 'ihlFVMmEGfwbvhlaj'; // Updated to the correct public key
 
