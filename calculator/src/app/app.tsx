@@ -10,6 +10,7 @@ import PropertySearch from './components/PropertySearch';
 import DevelopmentCalculator from './components/DevelopmentCalculator';
 import CrossBorderInvestment from './components/CrossBorderInvestment';
 import About from './components/About';
+import MultiFormatCalculator from './components/development/MultiFormatCalculator';
 // Import icons for the menu
 import { FaCalculator, FaBuilding, FaSearch, FaGlobeAmericas, FaUserLock, FaInfoCircle, FaTimes } from 'react-icons/fa';
 
@@ -72,6 +73,10 @@ export function App() {
             <div className="nav-icon"><FaBuilding /></div>
             <span className="nav-text">Development REITs/FIRBI</span>
           </NavLink>
+          <NavLink to="/development" onClick={closeMenu} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            <div className="nav-icon"><FaBuilding /></div>
+            <span className="nav-text">Multi-Format Calculator</span>
+          </NavLink>
           <NavLink to="/property-search" onClick={closeMenu} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
             <div className="nav-icon"><FaSearch /></div>
             <span className="nav-text">Property Search</span>
@@ -100,6 +105,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<Calculator />} />
           <Route path="/development-calculator" element={<DevelopmentCalculator />} />
+          <Route path="/development" element={<MultiFormatCalculator />} />
           <Route path="/property-search" element={<PropertySearch />} />
           <Route path="/cross-border" element={<CrossBorderInvestment />} />
           <Route path="/investor-access" element={<InvestorAccess />} />
