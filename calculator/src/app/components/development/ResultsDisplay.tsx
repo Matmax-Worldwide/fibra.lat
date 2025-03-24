@@ -1,8 +1,65 @@
 import React from 'react';
-import { MultiFormatResults } from '../../models/MultiFormatModel';
+
+interface CalculationResults {
+  propertyMetrics: {
+    totalArea: number;
+    buildingCost: number;
+    landCost: number;
+    totalInvestment: number;
+    hotelRooms: number;
+    servicedRooms: number;
+    airbnbUnits: number;
+  };
+  investmentMetrics: {
+    roi: number;
+    cap: number;
+    cashOnCash: number;
+    irr: number;
+    paybackPeriod: number;
+    npv: number;
+  };
+  annualRevenue: {
+    hotelRevenue: number;
+    servicedRevenue: number;
+    airbnbRevenue: number;
+    commercialRevenue: number;
+    totalRevenue: number;
+  };
+  formatPerformance: {
+    hotelOccupancy: number;
+    servicedOccupancy: number;
+    airbnbOccupancy: number;
+    hotelAdr: number;
+    servicedAdr: number;
+    airbnbAdr: number;
+    hotelRevpar: number;
+    servicedRevpar: number;
+    airbnbRevpar: number;
+  };
+  financialMetrics: {
+    grossOperatingProfit: number;
+    netOperatingIncome: number;
+    operatingExpenses: number;
+    debtService: number;
+    cashFlow: number;
+    ebitda: number;
+  };
+  financingDistribution: {
+    equityAmount: number;
+    debtAmount: number;
+    equityReturn: number;
+    debtReturn: number;
+    weightedReturn: number;
+  };
+  optimizationInsights?: {
+    isOptimal: boolean;
+    recommendations: string[];
+    potentialImprovement: number;
+  };
+}
 
 interface ResultsDisplayProps {
-  results: MultiFormatResults | null;
+  results: CalculationResults | null;
   propertyName: string;
   location: string;
   isLoading: boolean;
@@ -52,178 +109,201 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   };
 
   return (
-    <div className="results-display">
+    <>
       <div className="results-header">
         <h3>Investment Analysis Results</h3>
         <div className="project-details">
-          <div className="project-name">{propertyName || 'Unnamed Project'}</div>
+          <div className="project-name">{propertyName || 'Mixed-Use Property'}</div>
           <div className="project-location">{location || 'Location not specified'}</div>
         </div>
       </div>
 
       <div className="results-grid">
-        <div className="result-card property-metrics">
-          <h4>Property Metrics</h4>
+        <div className="result-card">
+          <h4>Property Configuration</h4>
           <div className="result-item">
-            <span className="result-label">Total Rooms:</span>
-            <span className="result-value">{results.totalRooms}</span>
+            <div className="result-label">Total Building Area</div>
+            <div className="result-value">{formatNumber(results.propertyMetrics.totalArea)} m²</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Total Area:</span>
-            <span className="result-value">{formatNumber(results.totalArea)} m²</span>
+            <div className="result-label">Hotel Rooms</div>
+            <div className="result-value">{results.propertyMetrics.hotelRooms}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Format Mix:</span>
-            <span className="result-value">
-              {results.hotelPercentage}% Hotel / {results.servicedPercentage}% Serviced / {results.airbnbPercentage}% Airbnb
-            </span>
+            <div className="result-label">Serviced Apartments</div>
+            <div className="result-value">{results.propertyMetrics.servicedRooms}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Stabilized Occupancy:</span>
-            <span className="result-value">{formatPercentage(results.stabilizedOccupancy)}</span>
-          </div>
-          <div className="result-item">
-            <span className="result-label">Stabilized ADR:</span>
-            <span className="result-value">{formatCurrency(results.stabilizedAdr)}</span>
-          </div>
-          <div className="result-item">
-            <span className="result-label">Stabilized RevPAR:</span>
-            <span className="result-value">{formatCurrency(results.stabilizedRevPar)}</span>
-          </div>
-        </div>
-
-        <div className="result-card investment-metrics">
-          <h4>Investment</h4>
-          <div className="result-item">
-            <span className="result-label">Acquisition Cost:</span>
-            <span className="result-value">{formatCurrency(results.acquisitionCost)}</span>
-          </div>
-          <div className="result-item">
-            <span className="result-label">Renovation Cost:</span>
-            <span className="result-value">{formatCurrency(results.renovationCost)}</span>
-          </div>
-          <div className="result-item">
-            <span className="result-label">FF&E Cost:</span>
-            <span className="result-value">{formatCurrency(results.ffeCost)}</span>
-          </div>
-          <div className="result-item">
-            <span className="result-label">Amenities Cost:</span>
-            <span className="result-value">{formatCurrency(results.amenitiesCost)}</span>
-          </div>
-          <div className="result-item">
-            <span className="result-label">Commercial Spaces Cost:</span>
-            <span className="result-value">{formatCurrency(results.commercialSpacesCost)}</span>
+            <div className="result-label">Airbnb Units</div>
+            <div className="result-value">{results.propertyMetrics.airbnbUnits}</div>
           </div>
           <div className="result-item total">
-            <span className="result-label">Total Investment:</span>
-            <span className="result-value">{formatCurrency(results.totalInvestment)}</span>
+            <div className="result-label">Total Rooms/Units</div>
+            <div className="result-value">
+              {results.propertyMetrics.hotelRooms + 
+               results.propertyMetrics.servicedRooms + 
+               results.propertyMetrics.airbnbUnits}
+            </div>
           </div>
         </div>
 
-        <div className="result-card revenue-metrics">
+        <div className="result-card">
+          <h4>Investment Metrics</h4>
+          <div className="result-item">
+            <div className="result-label">Total Investment</div>
+            <div className="result-value">{formatCurrency(results.propertyMetrics.totalInvestment)}</div>
+          </div>
+          <div className="result-item">
+            <div className="result-label">Return on Investment</div>
+            <div className="result-value">{formatPercentage(results.investmentMetrics.roi)}</div>
+          </div>
+          <div className="result-item">
+            <div className="result-label">Cap Rate</div>
+            <div className="result-value">{formatPercentage(results.investmentMetrics.cap)}</div>
+          </div>
+          <div className="result-item">
+            <div className="result-label">Cash on Cash</div>
+            <div className="result-value">{formatPercentage(results.investmentMetrics.cashOnCash)}</div>
+          </div>
+          <div className="result-item">
+            <div className="result-label">Payback Period</div>
+            <div className="result-value">{formatNumber(results.investmentMetrics.paybackPeriod)} years</div>
+          </div>
+          <div className="result-item total">
+            <div className="result-label">IRR (10 years)</div>
+            <div className="result-value">{formatPercentage(results.investmentMetrics.irr)}</div>
+          </div>
+        </div>
+
+        <div className="result-card">
           <h4>Annual Revenue</h4>
           <div className="result-item">
-            <span className="result-label">Room Revenue:</span>
-            <span className="result-value">{formatCurrency(results.annualRoomRevenue)}</span>
+            <div className="result-label">Hotel Revenue</div>
+            <div className="result-value">{formatCurrency(results.annualRevenue.hotelRevenue)}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Auxiliary Revenue:</span>
-            <span className="result-value">{formatCurrency(results.annualAuxiliaryRevenue)}</span>
+            <div className="result-label">Serviced Revenue</div>
+            <div className="result-value">{formatCurrency(results.annualRevenue.servicedRevenue)}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Commercial Revenue:</span>
-            <span className="result-value">{formatCurrency(results.annualCommercialRevenue)}</span>
+            <div className="result-label">Airbnb Revenue</div>
+            <div className="result-value">{formatCurrency(results.annualRevenue.airbnbRevenue)}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Total Revenue:</span>
-            <span className="result-value">{formatCurrency(results.totalAnnualRevenue)}</span>
-          </div>
-          <div className="result-item">
-            <span className="result-label">Operating Expenses:</span>
-            <span className="result-value">{formatCurrency(results.operatingExpenses)}</span>
+            <div className="result-label">Commercial Revenue</div>
+            <div className="result-value">{formatCurrency(results.annualRevenue.commercialRevenue)}</div>
           </div>
           <div className="result-item total">
-            <span className="result-label">Net Operating Income:</span>
-            <span className="result-value">{formatCurrency(results.netOperatingIncome)}</span>
+            <div className="result-label">Total Annual Revenue</div>
+            <div className="result-value">{formatCurrency(results.annualRevenue.totalRevenue)}</div>
           </div>
         </div>
 
-        <div className="result-card format-metrics">
+        <div className="result-card">
           <h4>Format Performance</h4>
           <div className="result-item">
-            <span className="result-label">Hotel NOI:</span>
-            <span className="result-value">{formatCurrency(results.hotelNoi)}</span>
+            <div className="result-label">Hotel Occupancy</div>
+            <div className="result-value">{formatPercentage(results.formatPerformance.hotelOccupancy)}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Serviced Apts NOI:</span>
-            <span className="result-value">{formatCurrency(results.servicedNoi)}</span>
+            <div className="result-label">Hotel ADR</div>
+            <div className="result-value">{formatCurrency(results.formatPerformance.hotelAdr)}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Airbnb NOI:</span>
-            <span className="result-value">{formatCurrency(results.airbnbNoi)}</span>
+            <div className="result-label">Hotel RevPAR</div>
+            <div className="result-value">{formatCurrency(results.formatPerformance.hotelRevpar)}</div>
+          </div>
+          <div className="result-item">
+            <div className="result-label">Serviced Occupancy</div>
+            <div className="result-value">{formatPercentage(results.formatPerformance.servicedOccupancy)}</div>
+          </div>
+          <div className="result-item">
+            <div className="result-label">Serviced ADR</div>
+            <div className="result-value">{formatCurrency(results.formatPerformance.servicedAdr)}</div>
+          </div>
+          <div className="result-item">
+            <div className="result-label">Serviced RevPAR</div>
+            <div className="result-value">{formatCurrency(results.formatPerformance.servicedRevpar)}</div>
+          </div>
+          <div className="result-item">
+            <div className="result-label">Airbnb Occupancy</div>
+            <div className="result-value">{formatPercentage(results.formatPerformance.airbnbOccupancy)}</div>
+          </div>
+          <div className="result-item">
+            <div className="result-label">Airbnb ADR</div>
+            <div className="result-value">{formatCurrency(results.formatPerformance.airbnbAdr)}</div>
+          </div>
+          <div className="result-item">
+            <div className="result-label">Airbnb RevPAR</div>
+            <div className="result-value">{formatCurrency(results.formatPerformance.airbnbRevpar)}</div>
           </div>
         </div>
 
-        <div className="result-card financial-metrics">
+        <div className="result-card">
           <h4>Financial Metrics</h4>
           <div className="result-item">
-            <span className="result-label">Cap Rate:</span>
-            <span className="result-value">{formatPercentage(results.capRate)}</span>
+            <div className="result-label">Gross Operating Profit</div>
+            <div className="result-value">{formatCurrency(results.financialMetrics.grossOperatingProfit)}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Return on Investment:</span>
-            <span className="result-value">{formatPercentage(results.returnOnInvestment)}</span>
+            <div className="result-label">EBITDA</div>
+            <div className="result-value">{formatCurrency(results.financialMetrics.ebitda)}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Payback Period:</span>
-            <span className="result-value">{formatNumber(results.paybackPeriod)} years</span>
+            <div className="result-label">Net Operating Income</div>
+            <div className="result-value">{formatCurrency(results.financialMetrics.netOperatingIncome)}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Estimated Property Value:</span>
-            <span className="result-value">{formatCurrency(results.estimatedPropertyValue)}</span>
+            <div className="result-label">Operating Expenses</div>
+            <div className="result-value">{formatCurrency(results.financialMetrics.operatingExpenses)}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Value Creation:</span>
-            <span className="result-value">{formatCurrency(results.valueCreation)} ({formatPercentage(results.valueCreationPercentage)})</span>
+            <div className="result-label">Annual Debt Service</div>
+            <div className="result-value">{formatCurrency(results.financialMetrics.debtService)}</div>
+          </div>
+          <div className="result-item total">
+            <div className="result-label">Cash Flow</div>
+            <div className="result-value">{formatCurrency(results.financialMetrics.cashFlow)}</div>
           </div>
         </div>
 
-        <div className="result-card financing-metrics">
-          <h4>Financing & Distributions</h4>
+        <div className="result-card">
+          <h4>Financing Distribution</h4>
           <div className="result-item">
-            <span className="result-label">Debt Financing:</span>
-            <span className="result-value">{formatCurrency(results.financingAmount)}</span>
+            <div className="result-label">Equity Amount</div>
+            <div className="result-value">{formatCurrency(results.financingDistribution.equityAmount)}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Annual Debt Service:</span>
-            <span className="result-value">{formatCurrency(results.annualDebtService)}</span>
+            <div className="result-label">Debt Amount</div>
+            <div className="result-value">{formatCurrency(results.financingDistribution.debtAmount)}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Debt Coverage Ratio:</span>
-            <span className="result-value">{formatNumber(results.debtCoverageRatio)}x</span>
+            <div className="result-label">Equity Return</div>
+            <div className="result-value">{formatPercentage(results.financingDistribution.equityReturn)}</div>
           </div>
           <div className="result-item">
-            <span className="result-label">Target Distribution:</span>
-            <span className="result-value">{formatCurrency(results.targetDistribution)}</span>
+            <div className="result-label">Debt Return</div>
+            <div className="result-value">{formatPercentage(results.financingDistribution.debtReturn)}</div>
           </div>
-          <div className="result-item">
-            <span className="result-label">Actual Distribution:</span>
-            <span className="result-value">{formatCurrency(results.actualDistribution)}</span>
-          </div>
-          <div className="result-item">
-            <span className="result-label">Distribution Yield:</span>
-            <span className="result-value">{formatPercentage(results.distributionYield)}</span>
+          <div className="result-item total">
+            <div className="result-label">Weighted Return</div>
+            <div className="result-value">{formatPercentage(results.financingDistribution.weightedReturn)}</div>
           </div>
         </div>
       </div>
 
-      {results.isOptimal && (
+      {results.optimizationInsights && !results.optimizationInsights.isOptimal && (
         <div className="optimization-notes">
-          <h4>Optimization Insights</h4>
-          <p>{results.optimizationNotes}</p>
+          <h4>Optimization Recommendations</h4>
+          <p>Our analysis suggests that your current format configuration may not be optimal. Consider these recommendations to improve your returns by up to {formatPercentage(results.optimizationInsights.potentialImprovement)}:</p>
+          <ul>
+            {results.optimizationInsights.recommendations.map((recommendation, index) => (
+              <li key={index}>{recommendation}</li>
+            ))}
+          </ul>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

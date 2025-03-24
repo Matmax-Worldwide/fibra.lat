@@ -148,89 +148,102 @@
 }
 
 .room-types-grid {
-  width: 100%;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
   overflow: hidden;
   margin-bottom: 20px;
 }
 
 .room-types-header {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 2fr;
-  background-color: #f7fafc;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 12px 16px;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.5fr;
+  background-color: #f9f9f9;
+  padding: 12px 15px;
   font-weight: 600;
-  color: #4a5568;
-  font-size: 0.9rem;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .room-type-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 2fr;
-  padding: 12px 16px;
-  border-bottom: 1px solid #e2e8f0;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.5fr;
+  padding: 8px 15px;
+  border-bottom: 1px solid #e0e0e0;
   align-items: center;
-  font-size: 0.95rem;
 }
 
 .room-type-row:last-child {
   border-bottom: none;
 }
 
-.room-name {
-  font-weight: 500;
-  color: #2d3748;
-}
-
-.room-area, .room-adr {
-  color: #4a5568;
-}
-
-.room-ratio {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.room-type-row input {
+  width: 90%;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .ratio-slider {
-  flex: 1;
-  height: 6px;
-  appearance: none;
-  background: #e2e8f0;
-  border-radius: 3px;
-  outline: none;
-}
-
-.ratio-slider::-webkit-slider-thumb {
-  appearance: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #4299e1;
-  cursor: pointer;
-}
-
-.ratio-slider::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #4299e1;
-  cursor: pointer;
+  width: 70% !important;
+  margin-right: 10px;
 }
 
 .ratio-value {
-  font-weight: 500;
-  color: #2d3748;
-  min-width: 40px;
+  display: inline-block;
+  width: 40px;
   text-align: right;
 }
 
 .room-configuration-info {
-  font-size: 0.9rem;
-  color: #718096;
-  padding: 0 10px;
+  font-size: 0.9em;
+  color: #666;
+  margin-top: 10px;
+}
+
+/* Totals and validation styles */
+.totals-row {
+  background-color: #f5f9ff;
+  font-weight: 500;
+}
+
+.total-ratio {
+  font-weight: bold;
+}
+
+.ratio-error {
+  color: #d32f2f;
+}
+
+.mix-validation {
+  display: block;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.validation-error {
+  color: #d32f2f;
+}
+
+.validation-success {
+  color: #388e3c;
+}
+
+.currency-input, .number-input {
+  text-align: right;
+  font-family: 'Arial', sans-serif;
+}
+
+.text-input:disabled {
+  background-color: #f9f9f9;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+/* Additional input styles */
+.room-type-row input[type="number"]::-webkit-inner-spin-button,
+.room-type-row input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
 }
 
 /* Commercial Spaces Styles */
