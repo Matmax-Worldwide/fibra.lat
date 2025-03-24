@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 
-// EmailJS configuration
-const EMAILJS_SERVICE_ID = 'service_4x72cnk'; // Replace with your actual service ID
-const EMAILJS_TEMPLATE_ID = 'template_kqtl0ko'; // Replace with your actual template ID
-const EMAILJS_USER_ID = 'zB2yQcVZfGABQvVLx'; // Replace with your actual user ID
+// EmailJS configuration - These values need to be correct from your EmailJS account
+const EMAILJS_SERVICE_ID = 'service_4x72cnk'; 
+const EMAILJS_TEMPLATE_ID = 'template_kqtl0ko'; 
+const EMAILJS_USER_ID = 'zB2yQcVZfGABQvVLx'; 
 
 const About: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -33,22 +33,27 @@ const About: React.FC = () => {
     setFormStatus('submitting');
     setErrorMessage('');
     
+    // For debugging - add to browser console
+    console.log('Sending email with config:', {
+      serviceId: EMAILJS_SERVICE_ID,
+      templateId: EMAILJS_TEMPLATE_ID,
+      userId: EMAILJS_USER_ID,
+      formData
+    });
+    
     try {
-      // Create a template parameters object 
-      const templateParams = {
-        from_name: formData.name,
-        reply_to: formData.email,
-        message: formData.message,
-        to_email: 'asp@gsa.lat' // The recipient email
-      };
+      // Create form reference - using EmailJS newer API pattern
+      const form = e.target as HTMLFormElement;
       
-      // Send the email using new EmailJS syntax
-      await emailjs.send(
-        EMAILJS_SERVICE_ID, 
-        EMAILJS_TEMPLATE_ID, 
-        templateParams,
-        EMAILJS_USER_ID  // Public key is now the 4th parameter
+      // Send the email using newer EmailJS API which is more reliable
+      const result = await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        form,
+        EMAILJS_USER_ID
       );
+      
+      console.log('Email sent successfully:', result.text);
       
       // Handle successful submission
       setFormStatus('success');
@@ -58,10 +63,13 @@ const About: React.FC = () => {
       setTimeout(() => {
         setFormStatus('idle');
       }, 5000);
-    } catch (error) {
+    } catch (error: any) {
+      // Enhanced error logging
       console.error('Error sending email:', error);
+      if (error.text) console.error('Error details:', error.text);
+      
       setFormStatus('error');
-      setErrorMessage('There was an error sending your message. Please try again later or email us directly.');
+      setErrorMessage(`There was an error sending your message (${error.text || 'Unknown error'}). Please try again later or email us directly.`);
     }
   };
 
@@ -108,26 +116,26 @@ const About: React.FC = () => {
           ) : (
             <form className="contact-form" onSubmit={handleSubmit}>
               <div className="form-group">
-                <label htmlFor="name">Name</label>
+                <label htmlFor="from_name">Name</label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
+                  id="from_name"
+                  name="from_name"
                   value={formData.name}
-                  onChange={handleChange}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
                   required
                   placeholder="Your name"
                 />
               </div>
               
               <div className="form-group">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="reply_to">Email</label>
                 <input
                   type="email"
-                  id="email"
-                  name="email"
+                  id="reply_to"
+                  name="reply_to"
                   value={formData.email}
-                  onChange={handleChange}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
                   required
                   placeholder="Your email address"
                 />
@@ -140,11 +148,18 @@ const About: React.FC = () => {
                   name="message"
                   rows={5}
                   value={formData.message}
-                  onChange={handleChange}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
                   required
                   placeholder="Your message"
                 ></textarea>
               </div>
+              
+              {/* Hidden field for recipient email */}
+              <input 
+                type="hidden" 
+                name="to_email" 
+                value="asp@gsa.lat" 
+              />
               
               {formStatus === 'error' && (
                 <div className="error-message">
